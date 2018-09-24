@@ -26,6 +26,7 @@ SECRET_KEY = '4rj^*$ob5!g_!=igalk=l7i8)49&1gt4rw84d0s&_eiz_&)v1i'
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'Evgeniy.pythonanywhere.com']
+#ALLOWED_HOSTS = [u'faen.pythonanywhere.com']
 
 
 # Application definition
