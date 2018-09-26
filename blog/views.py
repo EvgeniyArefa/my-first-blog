@@ -22,7 +22,9 @@ def post_new(request):
             return redirect('post_detail', pk=post.pk)
     else:
         form = PostForm()
-    return render(request, 'blog/post_edit.html', {'form': form, 'main_title': 'Сreation of the post'})
+    return render(request, 'blog/post_edit.html', {'form': form,
+                                                   'main_title': 'Сreation of the post',
+                                                   'title': 'New post'})
 
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -35,8 +37,20 @@ def post_edit(request, pk):
             return redirect('post_detail', pk=post.pk)
     else:
         form = PostForm(instance=post)
-    return render(request, 'blog/post_edit.html', {'form': form, 'main_title': 'Edit of the post'})
+    return render(request, 'blog/post_edit.html', {'form': form,
+                                                   'main_title': 'Edit of the post',
+                                                   'title': 'Edit post'})
 
 def post_draft_list(request):
     posts = Post.objects.filter(published_date__isnull=True).order_by('published_date')
     return render(request, 'blog/post_draft_list.html', {'posts': posts, 'main_title': 'Drafts'})
+
+def post_publish(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    post.publish()
+    return redirect('post_list')
+
+def post_remove(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    post.delete()
+    return redirect('post_list')
