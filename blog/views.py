@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 from .models import Post
 from .forms import PostForm
 
@@ -12,6 +13,7 @@ def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     return render(request, 'blog/post_detail.html', {'post': post, 'main_title': 'Details of post'})
 
+@login_required
 def post_new(request):
     if request.method == "POST":
         form = PostForm(request.POST)
@@ -26,6 +28,7 @@ def post_new(request):
                                                    'main_title': 'Сreation of the post',
                                                    'title': 'New post'})
 
+@login_required
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
@@ -41,15 +44,18 @@ def post_edit(request, pk):
                                                    'main_title': 'Edit of the post',
                                                    'title': 'Edit post'})
 
+@login_required
 def post_draft_list(request):
     posts = Post.objects.filter(published_date__isnull=True).order_by('published_date')
     return render(request, 'blog/post_draft_list.html', {'posts': posts, 'main_title': 'Drafts'})
 
+@login_required
 def post_publish(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.publish()
     return redirect('post_list')
 
+@login_required
 def post_remove(request, pk):
     post = get_object_or_404(Post, pk=pk)
     post.delete()
